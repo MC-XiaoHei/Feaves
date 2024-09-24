@@ -18,10 +18,10 @@ repositories {
 
 dependencies {
     compileOnly("org.leavesmc.leaves:leaves-api:1.21.1-R0.1-SNAPSHOT")
+    compileOnly("com.github.shynixn.mccoroutine:mccoroutine-folia-api:2.19.0")
+    compileOnly("com.github.shynixn.mccoroutine:mccoroutine-folia-core:2.19.0")
     implementation("dev.jorel:commandapi-bukkit-shade-mojang-mapped:9.5.2")
     implementation("dev.jorel:commandapi-bukkit-kotlin:9.5.2")
-    implementation("com.github.shynixn.mccoroutine:mccoroutine-folia-api:2.19.0")
-    implementation("com.github.shynixn.mccoroutine:mccoroutine-folia-core:2.19.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC.2")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.spongepowered:configurate-hocon:4.2.0-SNAPSHOT")
@@ -36,13 +36,10 @@ tasks.build {
 }
 
 tasks.withType<ShadowJar> {
-    relocate("dev", "${project.group}.feaves.dev")
-    relocate("io", "${project.group}.feaves.io")
-    relocate("com", "${project.group}.feaves.com")
-    relocate("org", "${project.group}.feaves.org")
+    relocate("dev.jorel.commandapi", "${project.group}.feaves.commandapi")
+    relocate("org.spongepowered.configurate", "${project.group}.feaves.configurate")
     relocate("kotlin", "${project.group}.feaves.kotlin")
     relocate("kotlinx", "${project.group}.feaves.kotlinx")
-    relocate("_COROUTINE", "${project.group}.feaves._COROUTINE")
 }
 
 tasks.processResources {
