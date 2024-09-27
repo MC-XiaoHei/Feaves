@@ -3,11 +3,7 @@ package cn.xo7.xiaohei.feaves.data
 import kotlinx.serialization.Serializable
 
 typealias UUIDString = String
-
-@Serializable
-data class FileModule(
-    val bots: MutableMap<UUIDString, BotData> = mutableMapOf(),
-)
+typealias BotDataFileModule = MutableMap<UUIDString, BotData>
 
 @Serializable
 data class BotData(

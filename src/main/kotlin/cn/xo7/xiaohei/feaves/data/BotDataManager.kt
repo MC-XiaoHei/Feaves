@@ -11,8 +11,8 @@ import java.io.File
 const val DATA_FILE = "./plugins/$PROJECT_NAME/data.json"
 
 object BotDataManager {
-    private lateinit var data: FileModule
-    private val dataFile: File
+    private lateinit var data: BotDataFileModule
+    private val dataFile: File = File(DATA_FILE)
     private val json = Json {
         prettyPrint = false
         ignoreUnknownKeys = true
@@ -26,23 +26,22 @@ object BotDataManager {
     }
 
     fun BotDataManager.getBotData(uuid: UUIDString): BotData {
-        return data.bots[uuid] ?: throw IllegalArgumentException("Bot with UUID $uuid not found.")
+        return data[uuid] ?: throw IllegalArgumentException("Bot with UUID $uuid not found.")
     }
 
     init {
-        var file = File(DATA_FILE)
-        if (!file.isFile) {
-            file.createNewFile()
-            file.writeText("{}")
+        if (dataFile.isFile) {
+            load()
+        } else {
+            dataFile.createNewFile()
+            data = mutableMapOf()
         }
-        dataFile = file
-        load()
-    }
-
-    fun load() {
-        data = json.decodeFromString<FileModule>(dataFile.readText())
         save()
     }
 
-    fun save() = dataFile.writeText(json.encodeToString<FileModule>(data))
+    fun load() {
+        data = json.decodeFromString<BotDataFileModule>(dataFile.readText())
+    }
+
+    fun save() = dataFile.writeText(json.encodeToString<BotDataFileModule>(data))
 }
