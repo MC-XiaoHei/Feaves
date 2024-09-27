@@ -3,6 +3,7 @@ import org.gradle.kotlin.dsl.dependencies
 
 plugins {
     kotlin("jvm") version "2.0.20"
+    kotlin("plugin.serialization") version "2.0.20"
     id("io.github.goooler.shadow") version "8.1.7"
 }
 
@@ -23,8 +24,11 @@ dependencies {
     implementation("dev.jorel:commandapi-bukkit-shade-mojang-mapped:9.5.2")
     implementation("dev.jorel:commandapi-bukkit-kotlin:9.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.spongepowered:configurate-hocon:4.2.0-SNAPSHOT")
+
+    testImplementation(kotlin("test"))
 }
 
 kotlin {
@@ -33,6 +37,10 @@ kotlin {
 
 tasks.build {
     dependsOn("shadowJar")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 tasks.withType<ShadowJar> {

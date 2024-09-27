@@ -1,5 +1,7 @@
 package cn.xo7.xiaohei.feaves
 
+import cn.xo7.xiaohei.feaves.command.registerCommands
+import cn.xo7.xiaohei.feaves.listener.BotListener
 import com.github.shynixn.mccoroutine.folia.SuspendingJavaPlugin
 import com.github.shynixn.mccoroutine.folia.entityDispatcher
 import com.github.shynixn.mccoroutine.folia.registerSuspendingEvents
@@ -11,8 +13,12 @@ import org.leavesmc.leaves.event.bot.BotActionScheduleEvent
 import org.leavesmc.leaves.event.bot.BotActionStopEvent
 import kotlin.coroutines.CoroutineContext
 
+const val PROJECT_NAME = "Feaves"
+
+typealias EventDispatcher = (event: Event) -> CoroutineContext
+
 object Feaves : SuspendingJavaPlugin() {
-    private val eventDispatcher = mapOf<Class<out Event>, (event: Event) -> CoroutineContext>(
+    private val eventDispatcher = mapOf<Class<out Event>, EventDispatcher>(
         Pair(BotActionScheduleEvent::class.java) {
             require(it is BotActionScheduleEvent)
             entityDispatcher(it.bot)
@@ -25,7 +31,11 @@ object Feaves : SuspendingJavaPlugin() {
 
     override suspend fun onEnableAsync() {
         CommandAPI.onEnable()
-        Bukkit.getPluginManager().registerSuspendingEvents(BotListener, this, eventDispatcher)
+        Bukkit.getPluginManager().registerSuspendingEvents(
+            BotListener,
+            this,
+            eventDispatcher
+        )
         registerCommands()
     }
 
