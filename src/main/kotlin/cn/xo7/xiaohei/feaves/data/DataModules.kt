@@ -18,11 +18,6 @@ data class LimitData(
 
 @Serializable
 data class CreateLimitData(
-    val location: LocationLimitData = LocationLimitData(),
-)
-
-@Serializable
-data class LocationLimitData(
     val locations: MutableSet<LocationData> = mutableSetOf(),
 )
 

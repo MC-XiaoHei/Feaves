@@ -1,0 +1,6 @@
+name: TestFeaves
+version: 1.0
+main: cn.xor7.xiaohei.feaves.Feaves
+description: Test
+author: MC_XiaoHei
+api-version: 1.21

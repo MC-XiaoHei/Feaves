@@ -4,6 +4,7 @@ import org.gradle.kotlin.dsl.dependencies
 plugins {
     kotlin("jvm") version "2.0.20"
     kotlin("plugin.serialization") version "2.0.20"
+    id("org.jetbrains.kotlinx.kover") version "0.9.0-RC"
     id("io.github.goooler.shadow") version "8.1.7"
 }
 
@@ -29,6 +30,13 @@ dependencies {
     implementation("org.spongepowered:configurate-hocon:4.2.0-SNAPSHOT")
 
     testImplementation(kotlin("test"))
+    testImplementation("org.leavesmc.leaves:leaves-api:1.21.1-R0.1-SNAPSHOT")
+    testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.107.0") {
+        exclude(group = "io.papermc.paper", module = "paper-api")
+    }
+    testImplementation("com.github.shynixn.mccoroutine:mccoroutine-folia-api:2.19.0")
+    testImplementation("com.github.shynixn.mccoroutine:mccoroutine-folia-core:2.19.0")
+    testImplementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-test:2.19.0")
 }
 
 kotlin {
@@ -41,6 +49,11 @@ tasks.build {
 
 tasks.test {
     useJUnitPlatform()
+    val file = file("./test")
+    if (!file.exists()) {
+        file.mkdirs()
+    }
+    workingDir = file
 }
 
 tasks.withType<ShadowJar> {

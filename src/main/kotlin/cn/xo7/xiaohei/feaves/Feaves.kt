@@ -14,10 +14,11 @@ import org.leavesmc.leaves.event.bot.BotActionStopEvent
 import kotlin.coroutines.CoroutineContext
 
 const val PROJECT_NAME = "Feaves"
-
 typealias EventDispatcher = (event: Event) -> CoroutineContext
 
-object Feaves : SuspendingJavaPlugin() {
+lateinit var INSTANCE: Feaves
+
+open class Feaves : SuspendingJavaPlugin() {
     private val eventDispatcher = mapOf<Class<out Event>, EventDispatcher>(
         Pair(BotActionScheduleEvent::class.java) {
             require(it is BotActionScheduleEvent)

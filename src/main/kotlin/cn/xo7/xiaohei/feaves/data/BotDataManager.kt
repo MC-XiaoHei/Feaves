@@ -1,6 +1,6 @@
 package cn.xo7.xiaohei.feaves.data
 
-import cn.xo7.xiaohei.feaves.Feaves
+import cn.xo7.xiaohei.feaves.INSTANCE
 import cn.xo7.xiaohei.feaves.PROJECT_NAME
 import com.github.shynixn.mccoroutine.folia.globalRegionDispatcher
 import kotlinx.coroutines.withContext
@@ -20,7 +20,7 @@ object BotDataManager {
     }
 
     suspend fun run(block: suspend BotDataManager.() -> Unit) {
-        withContext(Feaves.globalRegionDispatcher) {
+        withContext(INSTANCE.globalRegionDispatcher) {
             BotDataManager.block()
         }
     }
