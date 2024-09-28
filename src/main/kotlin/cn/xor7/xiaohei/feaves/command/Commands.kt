@@ -1,6 +1,6 @@
-package cn.xo7.xiaohei.feaves.command
+package cn.xor7.xiaohei.feaves.command
 
-import cn.xo7.xiaohei.feaves.INSTANCE
+import cn.xor7.xiaohei.feaves.INSTANCE
 import dev.jorel.commandapi.kotlindsl.anyExecutor
 import dev.jorel.commandapi.kotlindsl.commandAPICommand
 import dev.jorel.commandapi.kotlindsl.literalArgument

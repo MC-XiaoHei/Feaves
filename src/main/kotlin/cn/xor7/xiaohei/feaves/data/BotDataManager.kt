@@ -1,14 +1,14 @@
-package cn.xo7.xiaohei.feaves.data
+package cn.xor7.xiaohei.feaves.data
 
-import cn.xo7.xiaohei.feaves.INSTANCE
-import cn.xo7.xiaohei.feaves.PROJECT_NAME
+import cn.xor7.xiaohei.feaves.INSTANCE
+import cn.xor7.xiaohei.feaves.PROJECT_NAME
 import com.github.shynixn.mccoroutine.folia.globalRegionDispatcher
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 
-const val DATA_FILE = "./plugins/$PROJECT_NAME/data.json"
+const val DATA_FILE = "./plugins/${PROJECT_NAME}/data.json"
 
 object BotDataManager {
     private lateinit var data: BotDataFileModule

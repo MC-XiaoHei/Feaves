@@ -1,7 +1,7 @@
-package cn.xo7.xiaohei.feaves
+package cn.xor7.xiaohei.feaves
 
-import cn.xo7.xiaohei.feaves.command.registerCommands
-import cn.xo7.xiaohei.feaves.listener.BotListener
+import cn.xor7.xiaohei.feaves.command.registerCommands
+import cn.xor7.xiaohei.feaves.listener.BotListener
 import com.github.shynixn.mccoroutine.folia.SuspendingJavaPlugin
 import com.github.shynixn.mccoroutine.folia.entityDispatcher
 import com.github.shynixn.mccoroutine.folia.registerSuspendingEvents

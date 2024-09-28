@@ -1,9 +1,5 @@
 package cn.xor7.xiaohei.feaves.data
 
-import cn.xo7.xiaohei.feaves.data.BotDataManager
-import cn.xo7.xiaohei.feaves.data.DATA_FILE
-import cn.xo7.xiaohei.feaves.data.LocationData
-import cn.xo7.xiaohei.feaves.data.StorageType
 import cn.xor7.xiaohei.feaves.TEST_INSTANCE
 import com.github.shynixn.mccoroutine.folia.asyncDispatcher
 import kotlinx.coroutines.runBlocking

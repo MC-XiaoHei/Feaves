@@ -1,4 +1,4 @@
-package cn.xo7.xiaohei.feaves.data
+package cn.xor7.xiaohei.feaves.data
 
 import kotlinx.serialization.Serializable
 

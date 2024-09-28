@@ -1,4 +1,4 @@
-package cn.xo7.xiaohei.feaves.listener
+package cn.xor7.xiaohei.feaves.listener
 
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
