@@ -31,6 +31,7 @@ open class Feaves : SuspendingJavaPlugin() {
     )
 
     override suspend fun onEnableAsync() {
+        INSTANCE = this
         CommandAPI.onEnable()
         Bukkit.getPluginManager().registerSuspendingEvents(
             BotListener,

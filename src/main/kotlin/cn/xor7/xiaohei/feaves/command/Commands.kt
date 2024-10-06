@@ -27,7 +27,7 @@ fun registerCommands() {
                 rotationArgument("rotation", optional = true)
                 anyExecutor { sender, args ->
                     val bot = args[0] as Bot
-                    val name = args[1] as String? ?: ""
+                    val locName = args[1] as String? ?: ""
                     val location = args[2] as Location?
                         ?: (sender as? Player)?.location
                         ?: bot.location

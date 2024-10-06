@@ -16,7 +16,7 @@ inline fun CommandAPICommand.botArgument(
     block: Argument<*>.() -> Unit = {}
 ): CommandAPICommand =
     withArguments(CustomArgument<Bot, String>(StringArgument(nodeName)) { info ->
-        Bukkit.getBotManager().getBot(CustomArgument.CustomArgumentInfo.input)
+        Bukkit.getBotManager().getBot(info.input)
             ?: throw CustomArgumentException
                 .fromMessageBuilder(
                     MessageBuilder("No such bot: ")
@@ -31,7 +31,7 @@ inline fun CommandAPICommand.actionTypeArgument(
     block: Argument<*>.() -> Unit = {}
 ): CommandAPICommand =
     withArguments(CustomArgument<BotActionType, String>(StringArgument(nodeName)) { info ->
-        BotActionType.entries.find { it.name.equals(CustomArgument.CustomArgumentInfo.input, true) }
+        BotActionType.entries.find { it.name.equals(info.input, true) }
             ?: throw CustomArgumentException
                 .fromMessageBuilder(
                     MessageBuilder("No such action type: ")

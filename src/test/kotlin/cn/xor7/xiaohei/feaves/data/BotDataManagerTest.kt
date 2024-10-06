@@ -1,8 +1,10 @@
 package cn.xor7.xiaohei.feaves.data
 
-import cn.xor7.xiaohei.feaves.TEST_INSTANCE
+import cn.xor7.xiaohei.feaves.INSTANCE
+import cn.xor7.xiaohei.feaves.initMock
 import com.github.shynixn.mccoroutine.folia.asyncDispatcher
 import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.BeforeEach
 import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertContains
@@ -36,8 +38,11 @@ const val TEST_DATA_FILE_CONTENT = """
     """
 
 class BotDataManagerTest {
+    @BeforeEach
+    fun init() = initMock()
+
     @Test
-    fun testLoadBotData() = runBlocking(TEST_INSTANCE.asyncDispatcher) {
+    fun testLoadBotData() = runBlocking(INSTANCE.asyncDispatcher) {
         val file = File(DATA_FILE)
         if (!file.exists()) {
             file.parentFile.mkdirs()
