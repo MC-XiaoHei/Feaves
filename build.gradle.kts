@@ -51,7 +51,7 @@ tasks.build {
 
 tasks.test {
     useJUnitPlatform()
-    val file = file("./test")
+    val file = file("./run/test")
     if (!file.exists()) {
         file.mkdirs()
     }

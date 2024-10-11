@@ -19,14 +19,18 @@ object BotDataManager {
         encodeDefaults = false
     }
 
-    suspend fun run(block: suspend BotDataManager.() -> Unit) {
-        withContext(INSTANCE.globalRegionDispatcher) {
+    suspend fun <R> run(block: suspend BotDataManager.() -> R): R {
+        return withContext(INSTANCE.globalRegionDispatcher) {
             BotDataManager.block()
         }
     }
 
-    fun BotDataManager.getBotData(uuid: UUIDString): BotData {
-        return data[uuid] ?: throw IllegalArgumentException("Bot with UUID $uuid not found.")
+    suspend fun BotDataManager.getBotData(uuid: UUIDString): BotData = run {
+        return@run data[uuid] ?: throw IllegalArgumentException("Bot with UUID $uuid not found.")
+    }
+
+    suspend fun copyBotData(uuid: UUIDString): BotData = run {
+        return@run getBotData(uuid).copy()
     }
 
     init {

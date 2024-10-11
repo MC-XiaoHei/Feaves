@@ -14,6 +14,13 @@ data class BotData(
 @Serializable
 data class LimitData(
     val create: CreateLimitData = CreateLimitData(),
+    val action: MutableMap<String, ActionLimitData> = mutableMapOf(),
+)
+
+@Serializable
+data class ActionLimitData(
+    val enable: Boolean? = null,
+    val cooldown: String = "0",
 )
 
 @Serializable

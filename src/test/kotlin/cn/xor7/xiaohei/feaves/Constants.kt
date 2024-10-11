@@ -12,3 +12,7 @@ fun initMock() {
     TEST_SERVER = MockBukkit.mock()
     MockBukkit.load<Feaves>(Feaves::class.java)
 }
+
+fun closeMock() {
+    MockBukkit.unmock()
+}
