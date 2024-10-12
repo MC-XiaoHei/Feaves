@@ -2,6 +2,9 @@ package cn.xor7.xiaohei.feaves.data
 
 import cn.xor7.xiaohei.feaves.INSTANCE
 import cn.xor7.xiaohei.feaves.closeMock
+import cn.xor7.xiaohei.feaves.data.BotDataManager.DATA_FILE
+import cn.xor7.xiaohei.feaves.limit.LocationLimit
+import cn.xor7.xiaohei.feaves.limit.ActionLimit
 import cn.xor7.xiaohei.feaves.initMock
 import com.github.shynixn.mccoroutine.folia.asyncDispatcher
 import kotlinx.coroutines.runBlocking
@@ -14,10 +17,10 @@ import kotlin.test.assertEquals
 
 const val TEST_DATA_FILE_CONTENT = """
         {
-            "testUUID1": {
+            "botWithNothing": {
                 "storage": "BOT"
             },
-            "testUUID2": {
+            "playerWithCreateLocationLimit": {
                 "storage": "PLAYER",
                 "limit": {
                     "create": {
@@ -37,7 +40,7 @@ const val TEST_DATA_FILE_CONTENT = """
                     }
                 }
             },
-            "testUUID3": {
+            "playerWithActionLimit": {
                 "storage": "PLAYER"
                 "limit": {
                     "action": {
@@ -54,48 +57,46 @@ const val TEST_DATA_FILE_CONTENT = """
     """
 
 class BotDataManagerTest {
-    val dataFile = File(DATA_FILE).also { it.parentFile.mkdirs() }
-
-    @BeforeEach
-    fun init() {
-        initMock()
-        dataFile.createNewFile()
-        dataFile.writeText(TEST_DATA_FILE_CONTENT)
+    init {
+        File(DATA_FILE).also {
+            it.parentFile.mkdirs()
+            if (it.exists()) {
+                it.delete()
+            }
+            it.createNewFile()
+            it.writeText(TEST_DATA_FILE_CONTENT)
+        }
     }
 
     @BeforeEach
-    fun close() {
-        closeMock()
-    }
+    fun init() = initMock()
 
     @AfterEach
-    fun clean() {
-        dataFile.delete()
-    }
+    fun clean() = closeMock()
 
     @Test
     fun testLoadBotStorageType() = run {
-        val botData1 = getBotData("testUUID1")
+        val botData1 = copyBotData("botWithNothing")
         assertEquals(StorageType.BOT, botData1.storage)
 
-        val botData2 = getBotData("testUUID2")
+        val botData2 = copyBotData("playerWithCreateLocationLimit")
         assertEquals(StorageType.PLAYER, botData2.storage)
     }
 
     @Test
     fun testLoadBotActionLimit() = run {
-        val actionLimit = getBotData("testUUID3").limit.action
+        val actionLimit = copyBotData("playerWithActionLimit").limit.action
         assertEquals(2, actionLimit.size)
 
         assertEquals(
-            ActionLimitData(
+            ActionLimit(
                 enable = false
             ),
             actionLimit["*"]
         )
 
         assertEquals(
-            ActionLimitData(
+            ActionLimit(
                 enable = true
             ),
             actionLimit["use"]
@@ -104,19 +105,20 @@ class BotDataManagerTest {
 
     @Test
     fun testLoadBotLocationLimit() = run {
-        val locations = getBotData("testUUID2").limit.create.locations
+        val locations = copyBotData("playerWithCreateLocationLimit")
+            .limit.create.locations
         assertEquals(2, locations.size)
 
         assertContains(
             locations,
-            LocationData(
+            LocationLimit(
                 x = 0, y = 0, z = 0, world = "overworld"
             )
         )
 
         assertContains(
             locations,
-            LocationData(
+            LocationLimit(
                 x = 10, y = 10, z = 10, world = "nether"
             )
         )

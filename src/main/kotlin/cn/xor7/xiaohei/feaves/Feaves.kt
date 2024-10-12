@@ -13,9 +13,9 @@ import org.leavesmc.leaves.event.bot.BotActionScheduleEvent
 import org.leavesmc.leaves.event.bot.BotActionStopEvent
 import kotlin.coroutines.CoroutineContext
 
-const val PROJECT_NAME = "Feaves"
 typealias EventDispatcher = (event: Event) -> CoroutineContext
 
+const val PROJECT_NAME = "Feaves"
 lateinit var INSTANCE: Feaves
 
 open class Feaves : SuspendingJavaPlugin() {

@@ -51,6 +51,7 @@ tasks.build {
 
 tasks.test {
     useJUnitPlatform()
+    finalizedBy("koverHtmlReport")
     val file = file("./run/test")
     if (!file.exists()) {
         file.mkdirs()

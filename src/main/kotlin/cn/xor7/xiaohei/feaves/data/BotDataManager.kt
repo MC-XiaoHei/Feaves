@@ -8,9 +8,8 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 
-const val DATA_FILE = "./plugins/${PROJECT_NAME}/data.json"
-
 object BotDataManager {
+    const val DATA_FILE = "./plugins/${PROJECT_NAME}/data.json"
     private lateinit var data: BotDataFileModule
     private val dataFile: File = File(DATA_FILE)
     private val json = Json {
