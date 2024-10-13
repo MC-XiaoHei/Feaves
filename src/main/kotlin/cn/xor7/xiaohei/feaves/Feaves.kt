@@ -11,12 +11,14 @@ import org.bukkit.Bukkit
 import org.bukkit.event.Event
 import org.leavesmc.leaves.event.bot.BotActionScheduleEvent
 import org.leavesmc.leaves.event.bot.BotActionStopEvent
+import java.time.Clock
 import kotlin.coroutines.CoroutineContext
 
 typealias EventDispatcher = (event: Event) -> CoroutineContext
 
 const val PROJECT_NAME = "Feaves"
 lateinit var INSTANCE: Feaves
+var CLOCK = Clock.systemUTC()
 
 open class Feaves : SuspendingJavaPlugin() {
     private val eventDispatcher = mapOf<Class<out Event>, EventDispatcher>(

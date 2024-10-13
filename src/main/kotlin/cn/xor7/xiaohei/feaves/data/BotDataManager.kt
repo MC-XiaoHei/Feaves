@@ -25,7 +25,7 @@ object BotDataManager {
     }
 
     suspend fun BotDataManager.getBotData(uuid: UUIDString): BotData = run {
-        return@run data[uuid] ?: throw IllegalArgumentException("Bot with UUID $uuid not found.")
+        return@run data[uuid] ?: throw NoSuchElementException("Bot with UUID $uuid not found.")
     }
 
     suspend fun copyBotData(uuid: UUIDString): BotData = run {
@@ -33,11 +33,15 @@ object BotDataManager {
     }
 
     init {
+        init()
+    }
+
+    fun init() {
         if (dataFile.isFile) {
             load()
         } else {
-            dataFile.createNewFile()
             data = mutableMapOf()
+            dataFile.createNewFile()
         }
         save()
     }

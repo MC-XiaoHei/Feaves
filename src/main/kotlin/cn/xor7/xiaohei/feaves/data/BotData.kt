@@ -9,5 +9,5 @@ typealias BotDataFileModule = MutableMap<UUIDString, BotData>
 @Serializable
 data class BotData(
     val storage: StorageType = StorageType.BOT,
-    val limit: Limits = Limits(),
+    val limits: Limits = Limits(),
 )

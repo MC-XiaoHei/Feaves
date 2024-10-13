@@ -7,5 +7,5 @@ typealias ActionLimits = MutableMap<String, ActionLimit>
 @Serializable
 data class Limits(
     val create: CreateLimits = CreateLimits(),
-    val action: ActionLimits = mutableMapOf("*" to ActionLimit()),
+    val actions: ActionLimits = mutableMapOf("*" to ActionLimit()),
 )
