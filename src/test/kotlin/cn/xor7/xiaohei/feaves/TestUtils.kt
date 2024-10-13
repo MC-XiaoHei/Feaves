@@ -32,17 +32,6 @@ fun runInBotDataManager(block: suspend BotDataManager.() -> Unit) {
     }
 }
 
-fun initBotDataManagerWith(content: String) {
-    val file = File(DATA_FILE)
-    file.parentFile.mkdirs()
-    if (file.exists()) {
-        file.delete()
-    }
-    file.createNewFile()
-    file.writeText(content)
-    BotDataManager.init()
-}
-
 fun setMockTime(time: Duration) {
     CLOCK = Clock.fixed(Instant.ofEpochMilli(time.inWholeMilliseconds), ZoneId.systemDefault())
 }

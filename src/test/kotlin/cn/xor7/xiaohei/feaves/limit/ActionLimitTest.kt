@@ -1,7 +1,6 @@
 package cn.xor7.xiaohei.feaves.limit
 
 import cn.xor7.xiaohei.feaves.closeMock
-import cn.xor7.xiaohei.feaves.initBotDataManagerWith
 import cn.xor7.xiaohei.feaves.initMock
 import cn.xor7.xiaohei.feaves.runInBotDataManager
 import cn.xor7.xiaohei.feaves.setMockTime
@@ -13,109 +12,72 @@ import kotlin.test.assertTrue
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
-const val TEST_DATA_FILE_CONTENT = """
-    {
-        "DefaultAllowAll": {},
-        "DefaultDeniedAll": {
-            "limits": {
-                "actions": {
-                    "*": {
-                        "enable": false
-                    }
-                }
-            }
-        },
-        "DefaultAllowAllWithUseDenied": {
-            "limits": {
-                "actions": {
-                    "use": {
-                        "enable": false
-                    }
-                }
-            }
-        },
-        "DefaultDeniedAllWithUseAllowed": {
-            "limits": {
-                "actions": {
-                    "*": {
-                        "enable": false
-                    },
-                    "use": {
-                        "enable": true
-                    }
-                }
-            }
-        },
-        "AttackCooldown10Seconds": {
-            "limits": {
-                "actions": {
-                    "attack": {
-                        "cooldown": "10S"
-                    }
-                }
-            }
-        },
-        "AttackCooldown10SecondsWithLastUseMillions": {
-            "limits": {
-                "actions": {
-                    "attack": {
-                        "cooldown": "10S",
-                        "lastUseMillions": "1000"
-                    }
-                }
-            }
-        }
-    }
-"""
-
 class ActionLimitTest {
     @BeforeEach
-    fun init() {
-        initMock()
-        initBotDataManagerWith(TEST_DATA_FILE_CONTENT)
-    }
+    fun init() = initMock()
 
     @AfterEach
     fun clean() = closeMock()
 
     @Test
     fun testDefaultAllowAll() = runInBotDataManager {
-        val limits = getBotData("DefaultAllowAll").limits
+        val limits = Limits()
         assertTrue(limits.canUseAction("attack"))
         assertTrue(limits.canUseAction("use"))
     }
 
     @Test
     fun testDefaultDeniedAll() = runInBotDataManager {
-        val limits = getBotData("DefaultDeniedAll").limits
+        val limits = Limits(
+            actions = mutableMapOf(
+                "*" to ActionLimit(enable = false)
+            )
+        )
         assertFalse(limits.canUseAction("attack"))
         assertFalse(limits.canUseAction("use"))
     }
 
     @Test
     fun testDefaultAllowAllWithUseDenied() = runInBotDataManager {
-        val limits = getBotData("DefaultAllowAllWithUseDenied").limits
+        val limits = Limits(
+            actions = mutableMapOf(
+                "use" to ActionLimit(enable = false)
+            )
+        )
         assertTrue(limits.canUseAction("attack"))
         assertFalse(limits.canUseAction("use"))
     }
 
     @Test
     fun testDefaultDeniedAllWithUseAllowed() = runInBotDataManager {
-        val limits = getBotData("DefaultDeniedAllWithUseAllowed").limits
+        val limits = Limits(
+            actions = mutableMapOf(
+                "*" to ActionLimit(enable = false),
+                "use" to ActionLimit(enable = true)
+            )
+        )
         assertFalse(limits.canUseAction("attack"))
         assertTrue(limits.canUseAction("use"))
     }
 
     @Test
     fun testAttackCooldown10Seconds() = runInBotDataManager {
-        val limits = getBotData("AttackCooldown10Seconds").limits
+        val limits = Limits(
+            actions = mutableMapOf(
+                "attack" to ActionLimit(cooldown = "10S")
+            )
+        )
         assertTrue(limits.canUseAction("attack"))
         assertTrue(limits.canUseAction("use"))
     }
 
     @Test
     fun testAttackCooldown10SecondsWithLastUseMillions() = runInBotDataManager {
-        val limits = getBotData("AttackCooldown10SecondsWithLastUseMillions").limits
+        val limits = Limits(
+            actions = mutableMapOf(
+                "attack" to ActionLimit(cooldown = "10S", lastUseMillions = 1000)
+            )
+        )
         setMockTime(1000.milliseconds + 10.seconds - 1.milliseconds)
         assertFalse(limits.canUseAction("attack"))
         assertTrue(limits.canUseAction("use"))
