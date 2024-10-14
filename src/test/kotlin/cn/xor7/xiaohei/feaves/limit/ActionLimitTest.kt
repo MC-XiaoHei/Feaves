@@ -21,17 +21,15 @@ class ActionLimitTest {
 
     @Test
     fun testDefaultAllowAll() = runInBotDataManager {
-        val limits = Limits()
+        val limits = buildLimits()
         assertTrue(limits.canUseAction("attack"))
         assertTrue(limits.canUseAction("use"))
     }
 
     @Test
     fun testDefaultDeniedAll() = runInBotDataManager {
-        val limits = Limits(
-            actions = mutableMapOf(
-                "*" to ActionLimit(enable = false)
-            )
+        val limits = buildLimits(
+            "*" to ActionLimit(enable = false)
         )
         assertFalse(limits.canUseAction("attack"))
         assertFalse(limits.canUseAction("use"))
@@ -39,10 +37,8 @@ class ActionLimitTest {
 
     @Test
     fun testDefaultAllowAllWithUseDenied() = runInBotDataManager {
-        val limits = Limits(
-            actions = mutableMapOf(
-                "use" to ActionLimit(enable = false)
-            )
+        val limits = buildLimits(
+            "use" to ActionLimit(enable = false)
         )
         assertTrue(limits.canUseAction("attack"))
         assertFalse(limits.canUseAction("use"))
@@ -50,11 +46,9 @@ class ActionLimitTest {
 
     @Test
     fun testDefaultDeniedAllWithUseAllowed() = runInBotDataManager {
-        val limits = Limits(
-            actions = mutableMapOf(
-                "*" to ActionLimit(enable = false),
-                "use" to ActionLimit(enable = true)
-            )
+        val limits = buildLimits(
+            "*" to ActionLimit(enable = false),
+            "use" to ActionLimit(enable = true)
         )
         assertFalse(limits.canUseAction("attack"))
         assertTrue(limits.canUseAction("use"))
@@ -62,10 +56,8 @@ class ActionLimitTest {
 
     @Test
     fun testAttackCooldown10Seconds() = runInBotDataManager {
-        val limits = Limits(
-            actions = mutableMapOf(
-                "attack" to ActionLimit(cooldown = "10S")
-            )
+        val limits = buildLimits(
+            "attack" to ActionLimit(cooldown = "10S")
         )
         assertTrue(limits.canUseAction("attack"))
         assertTrue(limits.canUseAction("use"))
@@ -73,10 +65,8 @@ class ActionLimitTest {
 
     @Test
     fun testAttackCooldown10SecondsWithLastUseMillions() = runInBotDataManager {
-        val limits = Limits(
-            actions = mutableMapOf(
-                "attack" to ActionLimit(cooldown = "10S", lastUseMillions = 1000)
-            )
+        val limits = buildLimits(
+            "attack" to ActionLimit(cooldown = "10S", lastUseMillions = 1000)
         )
         setMockTime(1000.milliseconds + 10.seconds - 1.milliseconds)
         assertFalse(limits.canUseAction("attack"))
@@ -85,4 +75,6 @@ class ActionLimitTest {
         assertTrue(limits.canUseAction("attack"))
         assertTrue(limits.canUseAction("use"))
     }
+
+    fun buildLimits(vararg actions: Pair<String, ActionLimit>) = Limits(actions = mutableMapOf(*actions))
 }

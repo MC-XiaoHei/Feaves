@@ -4,8 +4,12 @@ import cn.xor7.xiaohei.feaves.closeMock
 import cn.xor7.xiaohei.feaves.data.BotDataManager.DATA_FILE
 import cn.xor7.xiaohei.feaves.initMock
 import cn.xor7.xiaohei.feaves.limit.ActionLimit
-import cn.xor7.xiaohei.feaves.limit.LocationLimit
+import cn.xor7.xiaohei.feaves.limit.CreateLimits
+import cn.xor7.xiaohei.feaves.limit.Limits
+import cn.xor7.xiaohei.feaves.data.LocationData
 import cn.xor7.xiaohei.feaves.runInBotDataManager
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.assertThrows
@@ -17,6 +21,36 @@ import kotlin.test.assertEquals
 
 
 class BotDataManagerTest {
+    private val json = Json {
+        prettyPrint = true
+        ignoreUnknownKeys = true
+        encodeDefaults = false
+    }
+    private val testDataFileContent = json.encodeToString(mutableMapOf(
+        NOTHING to BotData(),
+        BOT_WITH_NOTHING to BotData(storage = StorageType.BOT),
+        PLAYER_WITH_CREATE_LOCATION_LIMIT to BotData(
+            storage = StorageType.PLAYER,
+            limits = Limits(
+                create = CreateLimits(
+                    locations = mutableSetOf(
+                        LocationData(x = 0.0, y = 0.0, z = 0.0, world = "overworld"),
+                        LocationData(x = 10.0, y = 10.0, z = 10.0, world = "nether")
+                    )
+                )
+            )
+        ),
+        PLAYER_WITH_ACTION_LIMIT to BotData(
+            storage = StorageType.PLAYER,
+            limits = Limits(
+                actions = mutableMapOf(
+                    "*" to ActionLimit(enable = false),
+                    "use" to ActionLimit(enable = true)
+                )
+            )
+        )
+    ))
+
     @BeforeEach
     fun init() {
         initMock()
@@ -26,7 +60,7 @@ class BotDataManagerTest {
             file.delete()
         }
         file.createNewFile()
-        file.writeText(TEST_DATA_FILE_CONTENT)
+        file.writeText(testDataFileContent)
         BotDataManager.init()
     }
 
@@ -72,15 +106,15 @@ class BotDataManagerTest {
 
         assertContains(
             locations,
-            LocationLimit(
-                x = 0, y = 0, z = 0, world = "overworld"
+            LocationData(
+                x = 0.0, y = 0.0, z = 0.0, world = "overworld"
             )
         )
 
         assertContains(
             locations,
-            LocationLimit(
-                x = 10, y = 10, z = 10, world = "nether"
+            LocationData(
+                x = 10.0, y = 10.0, z = 10.0, world = "nether"
             )
         )
     }
@@ -103,47 +137,5 @@ class BotDataManagerTest {
         const val BOT_WITH_NOTHING = "BotWithNothing"
         const val PLAYER_WITH_CREATE_LOCATION_LIMIT = "PlayerWithCreateLocationLimit"
         const val PLAYER_WITH_ACTION_LIMIT = "PlayerWithActionLimit"
-
-        const val TEST_DATA_FILE_CONTENT = """
-            {
-                "$NOTHING": {},
-                "$BOT_WITH_NOTHING": {
-                    "storage": "BOT"
-                },
-                "$PLAYER_WITH_CREATE_LOCATION_LIMIT": {
-                    "storage": "PLAYER",
-                    "limits": {
-                        "create": {
-                            "locations": [
-                                {
-                                    "x": 0,
-                                    "y": 0,
-                                    "z": 0,
-                                    "world": "overworld"
-                                },{
-                                    "x": 10,
-                                    "y": 10,
-                                    "z": 10,
-                                    "world": "nether"
-                                }
-                            ]
-                        }
-                    }
-                },
-                "$PLAYER_WITH_ACTION_LIMIT": {
-                    "storage": "PLAYER"
-                    "limits": {
-                        "actions": {
-                            "*": {
-                                "enable": false
-                            },
-                            "use": {
-                                "enable": true
-                            }
-                        }
-                    }
-                }
-            }
-        """
     }
 }
