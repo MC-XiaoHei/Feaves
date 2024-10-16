@@ -29,7 +29,7 @@ class ActionLimitTest {
     @Test
     fun testDefaultDeniedAll() = runInBotDataManager {
         val limits = buildLimits(
-            "*" to ActionLimit(enable = false)
+            "@" to ActionLimit(enable = false)
         )
         assertFalse(limits.canUseAction("attack"))
         assertFalse(limits.canUseAction("use"))
@@ -47,7 +47,7 @@ class ActionLimitTest {
     @Test
     fun testDefaultDeniedAllWithUseAllowed() = runInBotDataManager {
         val limits = buildLimits(
-            "*" to ActionLimit(enable = false),
+            "@" to ActionLimit(enable = false),
             "use" to ActionLimit(enable = true)
         )
         assertFalse(limits.canUseAction("attack"))
@@ -76,5 +76,5 @@ class ActionLimitTest {
         assertTrue(limits.canUseAction("use"))
     }
 
-    fun buildLimits(vararg actions: Pair<String, ActionLimit>) = Limits(actions = mutableMapOf(*actions))
+    fun buildLimits(vararg actions: Pair<String, ActionLimit>) = mutableMapOf(*actions)
 }

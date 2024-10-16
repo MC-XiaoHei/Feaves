@@ -2,8 +2,6 @@ package cn.xor7.xiaohei.feaves.data
 
 import cn.xor7.xiaohei.feaves.closeMock
 import cn.xor7.xiaohei.feaves.initMock
-import cn.xor7.xiaohei.feaves.limit.CreateLimits
-import cn.xor7.xiaohei.feaves.limit.Limits
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -17,7 +15,7 @@ class LocationDataTest {
     fun clean() = closeMock()
 
     @Test
-    fun testMatch() {
+    fun testIncludes() {
         val real = LocationData(
             name = "test",
             world = "world",
@@ -39,13 +37,7 @@ class LocationDataTest {
             LocationData(name = "test", x = 0.10),
             LocationData(x = 0.10, y = 0.10),
         ).forEach { limit ->
-            assertTrue(limit.match(real))
+            assertTrue(real.includes(limit))
         }
     }
-
-    fun buildLimits(vararg locations: LocationData) = Limits(
-        create = CreateLimits(
-            locations = mutableSetOf(*locations)
-        )
-    )
 }

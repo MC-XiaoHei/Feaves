@@ -4,6 +4,8 @@ import cn.xor7.xiaohei.feaves.CLOCK
 import kotlinx.serialization.Serializable
 import java.time.Duration
 
+typealias ActionLimits = MutableMap<String, ActionLimit>
+
 @Serializable
 data class ActionLimit(
     val enable: Boolean? = null,
@@ -23,12 +25,12 @@ data class ActionLimit(
     }
 }
 
-fun Limits.canUseAction(actionName: String): Boolean {
-    val actionLimit = actions[actionName] ?: return defaultCanUseAction()
+fun ActionLimits.canUseAction(actionName: String): Boolean {
+    val actionLimit = this[actionName] ?: return defaultCanUseAction()
     return actionLimit.canUse()
 }
 
-fun Limits.defaultCanUseAction(): Boolean {
-    val defaultActionLimit = actions["*"] ?: return true
+fun ActionLimits.defaultCanUseAction(): Boolean {
+    val defaultActionLimit = this["@"] ?: return true
     return defaultActionLimit.canUse()
 }
