@@ -6,7 +6,6 @@ import cn.xor7.xiaohei.feaves.initMock
 import cn.xor7.xiaohei.feaves.limit.ActionLimit
 import cn.xor7.xiaohei.feaves.limit.CreateLimits
 import cn.xor7.xiaohei.feaves.limit.Limits
-import cn.xor7.xiaohei.feaves.data.LocationData
 import cn.xor7.xiaohei.feaves.runInBotDataManager
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
