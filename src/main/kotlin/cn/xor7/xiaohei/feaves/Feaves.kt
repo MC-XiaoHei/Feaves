@@ -2,6 +2,7 @@ package cn.xor7.xiaohei.feaves
 
 import cn.xor7.xiaohei.feaves.command.registerCommands
 import cn.xor7.xiaohei.feaves.listener.BotListener
+import cn.xor7.xiaohei.feaves.luckperms.detectLuckPerms
 import com.github.shynixn.mccoroutine.folia.SuspendingJavaPlugin
 import com.github.shynixn.mccoroutine.folia.entityDispatcher
 import com.github.shynixn.mccoroutine.folia.registerSuspendingEvents
@@ -17,8 +18,8 @@ import kotlin.coroutines.CoroutineContext
 typealias EventDispatcher = (event: Event) -> CoroutineContext
 
 const val PROJECT_NAME = "Feaves"
-lateinit var INSTANCE: Feaves
-var CLOCK = Clock.systemUTC()
+lateinit var feavesInstance: Feaves
+var pluginClock = Clock.systemUTC()
 
 open class Feaves : SuspendingJavaPlugin() {
     private val eventDispatcher = mapOf<Class<out Event>, EventDispatcher>(
@@ -33,7 +34,8 @@ open class Feaves : SuspendingJavaPlugin() {
     )
 
     override suspend fun onEnableAsync() {
-        INSTANCE = this
+        feavesInstance = this
+        detectLuckPerms()
         CommandAPI.onEnable()
         Bukkit.getPluginManager().registerSuspendingEvents(
             BotListener,

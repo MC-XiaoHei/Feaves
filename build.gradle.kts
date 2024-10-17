@@ -22,6 +22,7 @@ repositories {
 }
 
 dependencies {
+    compileOnly("net.luckperms:api:5.4")
     compileOnly("org.leavesmc.leaves:leaves-api:1.21.1-R0.1-SNAPSHOT")
     compileOnly("com.github.shynixn.mccoroutine:mccoroutine-folia-api:$mccoroutineVersion")
     compileOnly("com.github.shynixn.mccoroutine:mccoroutine-folia-core:$mccoroutineVersion")

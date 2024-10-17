@@ -1,6 +1,6 @@
 package cn.xor7.xiaohei.feaves.limit
 
-import cn.xor7.xiaohei.feaves.CLOCK
+import cn.xor7.xiaohei.feaves.pluginClock
 import kotlinx.serialization.Serializable
 import java.time.Duration
 
@@ -20,7 +20,7 @@ data class ActionLimit(
             return true
         }
 
-        val diffMillions = CLOCK.millis() - lastUseMillions
+        val diffMillions = pluginClock.millis() - lastUseMillions
         return diffMillions >= Duration.parse("PT$cooldown").toMillis()
     }
 }

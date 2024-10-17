@@ -1,6 +1,6 @@
 package cn.xor7.xiaohei.feaves.command
 
-import cn.xor7.xiaohei.feaves.INSTANCE
+import cn.xor7.xiaohei.feaves.feavesInstance
 import dev.jorel.commandapi.kotlindsl.anyExecutor
 import dev.jorel.commandapi.kotlindsl.commandAPICommand
 import dev.jorel.commandapi.kotlindsl.literalArgument
@@ -15,7 +15,7 @@ import org.bukkit.entity.Player
 import org.leavesmc.leaves.entity.Bot
 
 fun registerCommands() {
-    commandAPICommand("feaves", INSTANCE) {
+    commandAPICommand("feaves", feavesInstance) {
         literalArgument("bot") {
             botArgument("target")
             literalArgument("limit") {
