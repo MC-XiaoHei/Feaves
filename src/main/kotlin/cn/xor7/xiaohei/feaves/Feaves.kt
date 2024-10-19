@@ -2,7 +2,6 @@ package cn.xor7.xiaohei.feaves
 
 import cn.xor7.xiaohei.feaves.command.registerCommands
 import cn.xor7.xiaohei.feaves.listener.BotListener
-import cn.xor7.xiaohei.feaves.permission.luckperms.detectLuckPerms
 import com.github.shynixn.mccoroutine.folia.SuspendingJavaPlugin
 import com.github.shynixn.mccoroutine.folia.entityDispatcher
 import com.github.shynixn.mccoroutine.folia.registerSuspendingEvents
@@ -35,7 +34,6 @@ open class Feaves : SuspendingJavaPlugin() {
 
     override suspend fun onEnableAsync() {
         feavesInstance = this
-        detectLuckPerms()
         CommandAPI.onEnable()
         Bukkit.getPluginManager().registerSuspendingEvents(
             BotListener,
