@@ -2,7 +2,7 @@ package cn.xor7.xiaohei.feaves
 
 import cn.xor7.xiaohei.feaves.command.registerCommands
 import cn.xor7.xiaohei.feaves.listener.BotListener
-import cn.xor7.xiaohei.feaves.luckperms.detectLuckPerms
+import cn.xor7.xiaohei.feaves.permission.luckperms.detectLuckPerms
 import com.github.shynixn.mccoroutine.folia.SuspendingJavaPlugin
 import com.github.shynixn.mccoroutine.folia.entityDispatcher
 import com.github.shynixn.mccoroutine.folia.registerSuspendingEvents

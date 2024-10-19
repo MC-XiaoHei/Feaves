@@ -1,5 +1,6 @@
 package cn.xor7.xiaohei.feaves.command
 
+import cn.xor7.xiaohei.feaves.data.BotData
 import cn.xor7.xiaohei.feaves.feavesInstance
 import dev.jorel.commandapi.kotlindsl.anyExecutor
 import dev.jorel.commandapi.kotlindsl.commandAPICommand
@@ -9,10 +10,12 @@ import dev.jorel.commandapi.kotlindsl.rotationArgument
 import dev.jorel.commandapi.kotlindsl.stringArgument
 import dev.jorel.commandapi.kotlindsl.worldArgument
 import dev.jorel.commandapi.wrappers.Rotation
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.entity.Player
 import org.leavesmc.leaves.entity.Bot
+import java.util.UUID
 
 fun registerCommands() {
     commandAPICommand("feaves", feavesInstance) {
@@ -26,14 +29,6 @@ fun registerCommands() {
                 worldArgument("world", optional = true)
                 rotationArgument("rotation", optional = true)
                 anyExecutor { sender, args ->
-                    val bot = args[0] as Bot
-                    val locName = args[1] as String? ?: ""
-                    val location = args[2] as Location?
-                        ?: (sender as? Player)?.location
-                        ?: bot.location
-                    (args[3] as? World)?.let { location.world = it }
-                    (args[4] as? Rotation)?.let { location.commandAPIRotation = it }
-                    sender.sendMessage("Add creatable point $location for bot ${bot.name}")
                 }
             }
             literalArgument("transfer") {

@@ -1,11 +1,6 @@
 package cn.xor7.xiaohei.feaves.limit
 
-import cn.xor7.xiaohei.feaves.closeMock
-import cn.xor7.xiaohei.feaves.initMock
-import cn.xor7.xiaohei.feaves.runInBotDataManager
 import cn.xor7.xiaohei.feaves.setMockTime
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -13,21 +8,15 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 class ActionLimitTest {
-    @BeforeEach
-    fun init() = initMock()
-
-    @AfterEach
-    fun clean() = closeMock()
-
     @Test
-    fun testDefaultAllowAll() = runInBotDataManager {
+    fun testDefaultAllowAll() {
         val limits = buildLimits()
         assertTrue(limits.canUseAction("attack"))
         assertTrue(limits.canUseAction("use"))
     }
 
     @Test
-    fun testDefaultDeniedAll() = runInBotDataManager {
+    fun testDefaultDeniedAll() {
         val limits = buildLimits(
             "@" to ActionLimit(enable = false)
         )
@@ -36,7 +25,7 @@ class ActionLimitTest {
     }
 
     @Test
-    fun testDefaultAllowAllWithUseDenied() = runInBotDataManager {
+    fun testDefaultAllowAllWithUseDenied() {
         val limits = buildLimits(
             "use" to ActionLimit(enable = false)
         )
@@ -45,7 +34,7 @@ class ActionLimitTest {
     }
 
     @Test
-    fun testDefaultDeniedAllWithUseAllowed() = runInBotDataManager {
+    fun testDefaultDeniedAllWithUseAllowed() {
         val limits = buildLimits(
             "@" to ActionLimit(enable = false),
             "use" to ActionLimit(enable = true)
@@ -55,7 +44,7 @@ class ActionLimitTest {
     }
 
     @Test
-    fun testAttackCooldown10Seconds() = runInBotDataManager {
+    fun testAttackCooldown10Seconds() {
         val limits = buildLimits(
             "attack" to ActionLimit(cooldown = "10S")
         )
@@ -64,7 +53,7 @@ class ActionLimitTest {
     }
 
     @Test
-    fun testAttackCooldown10SecondsWithLastUseMillions() = runInBotDataManager {
+    fun testAttackCooldown10SecondsWithLastUseMillions() {
         val limits = buildLimits(
             "attack" to ActionLimit(cooldown = "10S", lastUseMillions = 1000)
         )

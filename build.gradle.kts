@@ -44,6 +44,9 @@ dependencies {
 
 kotlin {
     jvmToolchain(targetJavaVersion)
+    compilerOptions {
+        freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
+    }
 }
 
 tasks.build {

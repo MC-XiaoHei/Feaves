@@ -17,6 +17,7 @@ import java.util.NoSuchElementException
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
+import kotlin.uuid.Uuid
 
 
 class BotDataManagerTest {
@@ -25,30 +26,37 @@ class BotDataManagerTest {
         ignoreUnknownKeys = true
         encodeDefaults = false
     }
-    private val testDataFileContent = json.encodeToString(mutableMapOf(
-        NOTHING to BotData(),
-        BOT_WITH_NOTHING to BotData(storage = StorageType.BOT),
-        PLAYER_WITH_CREATE_LOCATION_LIMIT to BotData(
-            storage = StorageType.PLAYER,
-            limits = Limits(
-                create = CreateLimits(
-                    locations = mutableSetOf(
-                        LocationData(x = 0.0, y = 0.0, z = 0.0, world = "overworld"),
-                        LocationData(x = 10.0, y = 10.0, z = 10.0, world = "nether")
+    private val testDataFileContent = json.encodeToString(
+        mutableMapOf(
+            NOTHING_UUID to BotData(NOTHING_NAME),
+            BOT_WITH_NOTHING_UUID to BotData(
+                name = BOT_WITH_NOTHING_NAME,
+                storage = StorageType.BOT
+            ),
+            PLAYER_WITH_CREATE_LOCATION_LIMIT_UUID to BotData(
+                name = PLAYER_WITH_CREATE_LOCATION_LIMIT_NAME,
+                storage = StorageType.PLAYER,
+                limits = Limits(
+                    create = CreateLimits(
+                        locations = mutableSetOf(
+                            LocationData(x = 0.0, y = 0.0, z = 0.0, world = "overworld"),
+                            LocationData(x = 10.0, y = 10.0, z = 10.0, world = "nether")
+                        )
+                    )
+                )
+            ),
+            PLAYER_WITH_ACTION_LIMIT_UUID to BotData(
+                name = PLAYER_WITH_ACTION_LIMIT_NAME,
+                storage = StorageType.PLAYER,
+                limits = Limits(
+                    actions = mutableMapOf(
+                        "@" to ActionLimit(enable = false),
+                        "use" to ActionLimit(enable = true)
                     )
                 )
             )
-        ),
-        PLAYER_WITH_ACTION_LIMIT to BotData(
-            storage = StorageType.PLAYER,
-            limits = Limits(
-                actions = mutableMapOf(
-                    "*" to ActionLimit(enable = false),
-                    "use" to ActionLimit(enable = true)
-                )
-            )
         )
-    ))
+    )
 
     @BeforeEach
     fun init() {
@@ -67,27 +75,47 @@ class BotDataManagerTest {
     fun clean() = closeMock()
 
     @Test
+    fun testUuidToNameConvert() = runInBotDataManager {
+        assertEquals(
+            getBotData(NOTHING_NAME),
+            getBotData(NOTHING_UUID.toUuid())
+        )
+        assertEquals(
+            getBotData(BOT_WITH_NOTHING_NAME),
+            getBotData(BOT_WITH_NOTHING_UUID.toUuid())
+        )
+        assertEquals(
+            getBotData(PLAYER_WITH_CREATE_LOCATION_LIMIT_NAME),
+            getBotData(PLAYER_WITH_CREATE_LOCATION_LIMIT_UUID.toUuid())
+        )
+        assertEquals(
+            getBotData(PLAYER_WITH_ACTION_LIMIT_NAME),
+            getBotData(PLAYER_WITH_ACTION_LIMIT_UUID.toUuid())
+        )
+    }
+
+    @Test
     fun testLoadBotStorageType() = runInBotDataManager {
-        val botData1 = copyBotData(BOT_WITH_NOTHING)
+        val botData1 = copyBotData(BOT_WITH_NOTHING_UUID.toUuid())
         assertEquals(StorageType.BOT, botData1.storage)
 
-        val botData2 = copyBotData(PLAYER_WITH_CREATE_LOCATION_LIMIT)
+        val botData2 = copyBotData(PLAYER_WITH_CREATE_LOCATION_LIMIT_UUID.toUuid())
         assertEquals(StorageType.PLAYER, botData2.storage)
 
-        val botData3 = copyBotData(NOTHING)
+        val botData3 = copyBotData(NOTHING_UUID.toUuid())
         assertEquals(StorageType.BOT, botData3.storage)
     }
 
     @Test
     fun testLoadBotActionLimit() = runInBotDataManager {
-        val actionLimit = copyBotData(PLAYER_WITH_ACTION_LIMIT).limits.actions
+        val actionLimit = copyBotData(PLAYER_WITH_ACTION_LIMIT_UUID.toUuid()).limits.actions
         assertEquals(2, actionLimit.size)
 
         assertEquals(
             ActionLimit(
                 enable = false
             ),
-            actionLimit["*"]
+            actionLimit["@"]
         )
 
         assertEquals(
@@ -100,7 +128,7 @@ class BotDataManagerTest {
 
     @Test
     fun testLoadBotLocationLimit() = runInBotDataManager {
-        val locations = copyBotData(PLAYER_WITH_CREATE_LOCATION_LIMIT).limits.create.locations
+        val locations = copyBotData(PLAYER_WITH_CREATE_LOCATION_LIMIT_UUID.toUuid()).limits.create.locations
         assertEquals(2, locations.size)
 
         assertContains(
@@ -131,10 +159,16 @@ class BotDataManagerTest {
         assert(file.isFile)
     }
 
+    private fun String.toUuid() = Uuid.parse(this)
+
     companion object {
-        const val NOTHING = "Nothing"
-        const val BOT_WITH_NOTHING = "BotWithNothing"
-        const val PLAYER_WITH_CREATE_LOCATION_LIMIT = "PlayerWithCreateLocationLimit"
-        const val PLAYER_WITH_ACTION_LIMIT = "PlayerWithActionLimit"
+        const val NOTHING_UUID = "2a0a79c4-3a69-47fc-8f92-06956b16af4e"
+        const val NOTHING_NAME = "Nothing"
+        const val BOT_WITH_NOTHING_UUID = "01f255ca-73cd-4192-a655-ee067a62f1df"
+        const val BOT_WITH_NOTHING_NAME = "BotWithNothing"
+        const val PLAYER_WITH_CREATE_LOCATION_LIMIT_UUID = "d32f8284-e5d7-4829-aa6a-9dddc54db163"
+        const val PLAYER_WITH_CREATE_LOCATION_LIMIT_NAME = "PlayerWithCreateLocationLimit"
+        const val PLAYER_WITH_ACTION_LIMIT_UUID = "1eba35f5-c778-4e6a-9925-97041bde6df7"
+        const val PLAYER_WITH_ACTION_LIMIT_NAME = "PlayerWithActionLimit"
     }
 }
