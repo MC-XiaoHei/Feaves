@@ -4,7 +4,9 @@ import org.bukkit.Bukkit
 import org.bukkit.permissions.Permission
 import org.bukkit.permissions.PermissionAttachment
 import org.bukkit.permissions.PermissionDefault
+import org.leavesmc.leaves.entity.Bot
 import kotlin.uuid.Uuid
+import kotlin.uuid.toKotlinUuid
 
 data class BotPermission(val botUuid: Uuid, val perm: String) {
     val permissionNode: String
@@ -19,6 +21,8 @@ data class BotPermission(val botUuid: Uuid, val perm: String) {
 
     fun setDescription(value: String) = permission.setDescription(value)
 }
+
+fun Bot.botPermission(perm: String) = BotPermission(uniqueId.toKotlinUuid(), perm)
 
 fun PermissionAttachment.setPermission(perm: BotPermission, value: Boolean) = setPermission(perm.permission, value)
 

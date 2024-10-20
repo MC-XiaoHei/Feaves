@@ -10,7 +10,7 @@ typealias ActionLimits = MutableMap<String, ActionLimit>
 data class ActionLimit(
     val enable: Boolean? = null,
     val cooldown: String = "0",
-    val lastUseMillions: Long = 0L
+    val lastUseMillions: Long = 0L,
 ) {
     fun canUse(): Boolean {
         if (enable == false) {

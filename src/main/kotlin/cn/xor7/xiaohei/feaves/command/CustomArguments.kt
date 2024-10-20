@@ -16,7 +16,7 @@ import org.leavesmc.leaves.entity.botaction.BotActionType
 
 inline fun CommandAPICommand.botArgument(
     nodeName: String,
-    block: Argument<*>.() -> Unit = {}
+    block: Argument<*>.() -> Unit = {},
 ): CommandAPICommand =
     withArguments(CustomArgument<BotData, String>(StringArgument(nodeName)) { info ->
         runBlocking(feavesInstance.globalRegionDispatcher) {
@@ -38,7 +38,7 @@ inline fun CommandAPICommand.botArgument(
 
 inline fun CommandAPICommand.actionTypeArgument(
     nodeName: String,
-    block: Argument<*>.() -> Unit = {}
+    block: Argument<*>.() -> Unit = {},
 ): CommandAPICommand =
     withArguments(CustomArgument<BotActionType, String>(StringArgument(nodeName)) { info ->
         BotActionType.entries.find { it.name.equals(info.input, true) }
@@ -50,3 +50,4 @@ inline fun CommandAPICommand.actionTypeArgument(
     }.replaceSuggestions(ArgumentSuggestions.strings { _ ->
         BotActionType.entries.map { it.name }.toTypedArray()
     }).apply(block))
+

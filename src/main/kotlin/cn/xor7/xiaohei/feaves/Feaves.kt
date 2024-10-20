@@ -9,8 +9,15 @@ import dev.jorel.commandapi.CommandAPI
 import dev.jorel.commandapi.CommandAPIBukkitConfig
 import org.bukkit.Bukkit
 import org.bukkit.event.Event
+import org.leavesmc.leaves.event.bot.BotActionExecuteEvent
 import org.leavesmc.leaves.event.bot.BotActionScheduleEvent
 import org.leavesmc.leaves.event.bot.BotActionStopEvent
+import org.leavesmc.leaves.event.bot.BotCreateEvent
+import org.leavesmc.leaves.event.bot.BotDeathEvent
+import org.leavesmc.leaves.event.bot.BotEvent
+import org.leavesmc.leaves.event.bot.BotJoinEvent
+import org.leavesmc.leaves.event.bot.BotRemoveEvent
+import org.leavesmc.leaves.event.bot.BotSpawnLocationEvent
 import java.time.Clock
 import kotlin.coroutines.CoroutineContext
 
@@ -22,14 +29,13 @@ var pluginClock = Clock.systemUTC()
 
 open class Feaves : SuspendingJavaPlugin() {
     private val eventDispatcher = mapOf<Class<out Event>, EventDispatcher>(
-        Pair(BotActionScheduleEvent::class.java) {
-            require(it is BotActionScheduleEvent)
-            entityDispatcher(it.bot)
-        },
-        Pair(BotActionStopEvent::class.java) {
-            require(it is BotActionStopEvent)
-            entityDispatcher(it.bot)
-        }
+        botDispatcher<BotActionExecuteEvent>(),
+        botDispatcher<BotActionScheduleEvent>(),
+        botDispatcher<BotActionStopEvent>(),
+        botDispatcher<BotDeathEvent>(),
+        botDispatcher<BotJoinEvent>(),
+        botDispatcher<BotRemoveEvent>(),
+        botDispatcher<BotSpawnLocationEvent>()
     )
 
     override suspend fun onEnableAsync() {
@@ -53,4 +59,10 @@ open class Feaves : SuspendingJavaPlugin() {
     override suspend fun onDisableAsync() {
         CommandAPI.onDisable()
     }
+
+    private inline fun <reified T : BotEvent> botDispatcher(): Pair<Class<out T>, EventDispatcher> =
+        Pair(T::class.java) { event ->
+            require(event is T)
+            entityDispatcher(event.bot)
+        }
 }

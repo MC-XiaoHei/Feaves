@@ -1,7 +1,7 @@
 package cn.xor7.xiaohei.feaves.data
 
-import cn.xor7.xiaohei.feaves.feavesInstance
 import cn.xor7.xiaohei.feaves.PROJECT_NAME
+import cn.xor7.xiaohei.feaves.feavesInstance
 import com.github.shynixn.mccoroutine.folia.globalRegionDispatcher
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.builtins.serializer

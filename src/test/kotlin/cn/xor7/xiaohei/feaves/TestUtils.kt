@@ -3,9 +3,9 @@ package cn.xor7.xiaohei.feaves
 import be.seeseemelk.mockbukkit.MockBukkit
 import be.seeseemelk.mockbukkit.ServerMock
 import cn.xor7.xiaohei.feaves.data.BotDataManager
-import com.github.shynixn.mccoroutine.folia.test.TestMCCoroutine
 import com.github.shynixn.mccoroutine.folia.MCCoroutine
 import com.github.shynixn.mccoroutine.folia.asyncDispatcher
+import com.github.shynixn.mccoroutine.folia.test.TestMCCoroutine
 import kotlinx.coroutines.runBlocking
 import java.time.Clock
 import java.time.Instant

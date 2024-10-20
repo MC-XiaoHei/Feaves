@@ -1,6 +1,5 @@
 package cn.xor7.xiaohei.feaves.command
 
-import cn.xor7.xiaohei.feaves.data.BotData
 import cn.xor7.xiaohei.feaves.feavesInstance
 import dev.jorel.commandapi.kotlindsl.anyExecutor
 import dev.jorel.commandapi.kotlindsl.commandAPICommand
@@ -10,12 +9,7 @@ import dev.jorel.commandapi.kotlindsl.rotationArgument
 import dev.jorel.commandapi.kotlindsl.stringArgument
 import dev.jorel.commandapi.kotlindsl.worldArgument
 import dev.jorel.commandapi.wrappers.Rotation
-import org.bukkit.Bukkit
 import org.bukkit.Location
-import org.bukkit.World
-import org.bukkit.entity.Player
-import org.leavesmc.leaves.entity.Bot
-import java.util.UUID
 
 fun registerCommands() {
     commandAPICommand("feaves", feavesInstance) {
