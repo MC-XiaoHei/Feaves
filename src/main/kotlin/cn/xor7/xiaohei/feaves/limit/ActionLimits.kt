@@ -1,5 +1,6 @@
 package cn.xor7.xiaohei.feaves.limit
 
+import cn.xor7.xiaohei.feaves.action.Action
 import cn.xor7.xiaohei.feaves.pluginClock
 import kotlinx.serialization.Serializable
 import java.time.Duration
@@ -25,8 +26,10 @@ data class ActionLimit(
     }
 }
 
-fun ActionLimits.canUseAction(actionName: String): Boolean {
-    val actionLimit = this[actionName] ?: return defaultCanUseAction()
+fun ActionLimits.canUseAction(action: Action) = canUseAction(action.key)
+
+fun ActionLimits.canUseAction(actionKey: String): Boolean {
+    val actionLimit = this[actionKey] ?: return defaultCanUseAction()
     return actionLimit.canUse()
 }
 

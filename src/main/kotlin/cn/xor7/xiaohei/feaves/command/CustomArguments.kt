@@ -1,5 +1,7 @@
 package cn.xor7.xiaohei.feaves.command
 
+import cn.xor7.xiaohei.feaves.action.Action
+import cn.xor7.xiaohei.feaves.action.actions
 import cn.xor7.xiaohei.feaves.data.BotData
 import cn.xor7.xiaohei.feaves.data.BotDataManager
 import cn.xor7.xiaohei.feaves.feavesInstance
@@ -9,10 +11,8 @@ import dev.jorel.commandapi.arguments.Argument
 import dev.jorel.commandapi.arguments.ArgumentSuggestions
 import dev.jorel.commandapi.arguments.CustomArgument
 import dev.jorel.commandapi.arguments.CustomArgument.CustomArgumentException
-import dev.jorel.commandapi.arguments.CustomArgument.MessageBuilder
 import dev.jorel.commandapi.arguments.StringArgument
 import kotlinx.coroutines.runBlocking
-import org.leavesmc.leaves.entity.botaction.BotActionType
 
 inline fun CommandAPICommand.botArgument(
     nodeName: String,
@@ -25,9 +25,7 @@ inline fun CommandAPICommand.botArgument(
                     return@run getBotData(info.input.botUuid)
                 }
             } catch (_: NoSuchElementException) {
-                throw CustomArgumentException.fromMessageBuilder(
-                    MessageBuilder("No such bot: ").appendArgInput()
-                )
+                throw CustomArgumentException.fromString("No such bot: ${info.input}")
             }
         }
     }.replaceSuggestions(ArgumentSuggestions.strings { _ ->
@@ -40,14 +38,13 @@ inline fun CommandAPICommand.actionTypeArgument(
     nodeName: String,
     block: Argument<*>.() -> Unit = {},
 ): CommandAPICommand =
-    withArguments(CustomArgument<BotActionType, String>(StringArgument(nodeName)) { info ->
-        BotActionType.entries.find { it.name.equals(info.input, true) }
-            ?: throw CustomArgumentException
-                .fromMessageBuilder(
-                    MessageBuilder("No such action type: ")
-                        .appendArgInput()
-                )
+    withArguments(CustomArgument<Action, String>(StringArgument(nodeName)) { info ->
+        try {
+            Action.fromDisplayName(info.input)
+        } catch (_: IllegalArgumentException) {
+            throw CustomArgumentException.fromString("No such action: ${info.input}")
+        }
     }.replaceSuggestions(ArgumentSuggestions.strings { _ ->
-        BotActionType.entries.map { it.name }.toTypedArray()
+        actions.map { it.displayName }.toTypedArray()
     }).apply(block))
 

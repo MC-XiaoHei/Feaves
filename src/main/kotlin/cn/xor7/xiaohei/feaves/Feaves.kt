@@ -12,7 +12,6 @@ import org.bukkit.event.Event
 import org.leavesmc.leaves.event.bot.BotActionExecuteEvent
 import org.leavesmc.leaves.event.bot.BotActionScheduleEvent
 import org.leavesmc.leaves.event.bot.BotActionStopEvent
-import org.leavesmc.leaves.event.bot.BotCreateEvent
 import org.leavesmc.leaves.event.bot.BotDeathEvent
 import org.leavesmc.leaves.event.bot.BotEvent
 import org.leavesmc.leaves.event.bot.BotJoinEvent

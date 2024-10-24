@@ -1,6 +1,7 @@
 package cn.xor7.xiaohei.feaves.data
 
 import cn.xor7.xiaohei.feaves.PROJECT_NAME
+import cn.xor7.xiaohei.feaves.data.BotDataManager.getBotData
 import cn.xor7.xiaohei.feaves.feavesInstance
 import com.github.shynixn.mccoroutine.folia.globalRegionDispatcher
 import kotlinx.coroutines.withContext
@@ -9,8 +10,10 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
+import org.leavesmc.leaves.entity.Bot
 import java.io.File
 import kotlin.uuid.Uuid
+import kotlin.uuid.toKotlinUuid
 
 object BotDataManager {
     const val DATA_FILE = "./plugins/${PROJECT_NAME}/data.json"
@@ -86,3 +89,5 @@ object BotDataManager {
 
     fun save() = dataFile.writeText(json.encodeToString<BotDataFileModule>(data))
 }
+
+suspend fun Bot.data(): BotData = BotDataManager.getBotData(uniqueId.toKotlinUuid())
