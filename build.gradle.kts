@@ -13,7 +13,6 @@ val mccoroutineVersion = "2.20.0"
 val commandAPIVersion = "9.5.3"
 
 repositories {
-    maven("https://maven.aliyun.com/repository/public")
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://oss.sonatype.org/content/groups/public/")
     maven("https://repo.leavesmc.org/snapshots")
@@ -22,10 +21,10 @@ repositories {
 }
 
 dependencies {
-    // compileOnly("net.luckperms:api:5.4") // TODO: add context and expire perms support
+    // TODO: add context and expire perms support (LuckPerms)
     compileOnly("org.leavesmc.leaves:leaves-api:1.21.1-R0.1-SNAPSHOT")
-    compileOnly("com.github.shynixn.mccoroutine:mccoroutine-folia-api:$mccoroutineVersion")
-    compileOnly("com.github.shynixn.mccoroutine:mccoroutine-folia-core:$mccoroutineVersion")
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-folia-api:$mccoroutineVersion")
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-folia-core:$mccoroutineVersion")
     implementation("dev.jorel:commandapi-bukkit-shade-mojang-mapped:$commandAPIVersion")
     implementation("dev.jorel:commandapi-bukkit-kotlin:$commandAPIVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0-RC.2")
@@ -66,6 +65,7 @@ tasks.test {
 tasks.withType<ShadowJar> {
     relocate("dev.jorel.commandapi", "${project.group}.feaves.commandapi")
     relocate("org.spongepowered.configurate", "${project.group}.feaves.configurate")
+    relocate("com.github.shynixn.mccoroutine", "${project.group}.feaves.mccoroutine")
     relocate("kotlin", "${project.group}.feaves.kotlin")
     relocate("kotlinx", "${project.group}.feaves.kotlinx")
 }

@@ -23,24 +23,9 @@ fun registerCommands() {
                 worldArgument("world", optional = true)
                 rotationArgument("rotation", optional = true)
                 anyExecutor { sender, args ->
+
                 }
-            }
-            literalArgument("transfer") {
-
-            }
-            literalArgument("perms") {
-
-            }
-            literalArgument("gui") {
-
             }
         }
     }
 }
-
-var Location.commandAPIRotation
-    get() = Rotation(yaw, pitch)
-    set(value) {
-        this.yaw = value.yaw
-        this.pitch = value.pitch
-    }
